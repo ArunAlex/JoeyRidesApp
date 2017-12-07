@@ -1,0 +1,8 @@
+{
+  "name": "joeyridesapp",
+  "app_id": "8dc1da7b",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
