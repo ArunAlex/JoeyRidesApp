@@ -6,14 +6,18 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
-import { UserHomePage } from '../pages/user-home/user-home';
+import { JoeyHomePage } from '../pages/Joey/user-home/user-home';
+import { RooHomePage } from '../pages/Roo/driver-home/driver-home';
 
 import { FIREBASE_CONFIG } from './app.firebase.config';
+import { AuthServiceProvider } from '../providers/authService/authService';
+import { DatabaseProvider } from '../providers/database/database';
 
 
 @NgModule({
@@ -22,13 +26,15 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     HomePage,
     LoginPage,
     SignupPage,
-    UserHomePage
+    JoeyHomePage,
+    RooHomePage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -36,12 +42,15 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
     HomePage,
     LoginPage,
     SignupPage,
-    UserHomePage
+    JoeyHomePage,
+    RooHomePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthServiceProvider,
+    DatabaseProvider
   ]
 })
 export class AppModule {}

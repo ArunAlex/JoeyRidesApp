@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../model/user';
 
-import { AngularFireAuth } from 'angularfire2/auth';
-import { UserHomePage } from '../user-home/user-home';
 
+import { AuthServiceProvider } from '../../providers/authService/authService';
+import { DatabaseProvider } from '../../providers/database/database';
+import { JoeyHomePage } from '../Joey/user-home/user-home';
+import { RooHomePage } from '../Roo/driver-home/driver-home';
 /**
  * Generated class for the LoginPage page.
  *
@@ -23,18 +25,32 @@ export class LoginPage {
 
   user = {} as User;
 
-  constructor(private afAuth: AngularFireAuth, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private aService: AuthServiceProvider, private database: DatabaseProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   async login(user: User) {
-    try{
-      const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
-      if(result){
-        this.navCtrl.setRoot(UserHomePage);
-      }
-    }
-    catch(e){
-      console.error(e);
-    }
+      this.aService.loginWithEmail(user.email, user.password)
+        .then(()=>{
+            var uid = this.aService.authState.uid;
+            var rooRef = this.database.rooItemsCollection.ref.where('uid','==', uid);
+            var joeyRef = this.database.joeyItemsCollection.ref.where('uid','==', uid);
+            rooRef.get()
+            .then((result) => {
+              if(result.docs.length == 0){
+                joeyRef.get()
+                .then((result) =>{
+                  if(!result){
+                    //throw error
+                  }
+                  else{
+                    this.navCtrl.setRoot(JoeyHomePage);
+                  }
+                })
+              } 
+              else{
+                this.navCtrl.setRoot(RooHomePage);
+              } 
+            });
+        });
   }
 }

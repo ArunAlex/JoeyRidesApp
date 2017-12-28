@@ -13,13 +13,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   selector: 'page-user-home',
   templateUrl: 'user-home.html',
 })
-export class UserHomePage {
+export class JoeyHomePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserHomePage');
+    console.log('ionViewDidLoad JoeyHomePage');
   }
 
 }
