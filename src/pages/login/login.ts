@@ -9,6 +9,7 @@ import { AuthServiceProvider } from '../../providers/authService/authService';
 import { DatabaseProvider } from '../../providers/database/database';
 import { JoeyHomePage } from '../Joey/user-home/user-home';
 import { RooHomePage } from '../Roo/driver-home/driver-home';
+import { database } from 'firebase/app';
 /**
  * Generated class for the LoginPage page.
  *
@@ -32,25 +33,17 @@ export class LoginPage {
       this.aService.loginWithEmail(user.email, user.password)
         .then(()=>{
             var uid = this.aService.authState.uid;
-            var rooRef = this.database.rooItemsCollection.ref.where('uid','==', uid);
-            var joeyRef = this.database.joeyItemsCollection.ref.where('uid','==', uid);
-            rooRef.get()
-            .then((result) => {
-              if(result.docs.length == 0){
-                joeyRef.get()
-                .then((result) =>{
-                  if(!result){
-                    //throw error
-                  }
-                  else{
-                    this.navCtrl.setRoot(JoeyHomePage);
-                  }
-                })
-              } 
-              else{
-                this.navCtrl.setRoot(RooHomePage);
-              } 
-            });
+            this.database.getUserById(uid)
+            .then(() =>{
+              this.database.user.subscribe(data => {
+                if(data.isJoey) {
+                  this.navCtrl.setRoot(JoeyHomePage);
+                }
+                else {
+                  this.navCtrl.setRoot(RooHomePage);
+                }
+              });
+          }); 
         });
   }
 }

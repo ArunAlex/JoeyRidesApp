@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { FareEstimatorPage } from '../pages/Joey/fare-estimator/fare-estimator'
+import { AuthServiceProvider } from '../providers/authService/authService';
 @Component({
   templateUrl: 'app.html'
 })
@@ -12,7 +13,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage:any = HomePage;
   pages: Array<{title: string, component: any}>
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private aService: AuthServiceProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -26,9 +27,11 @@ export class MyApp {
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+  logout(page) {
+    this.aService.logout();
+    this.nav.setRoot(HomePage);
   }
 }
 
