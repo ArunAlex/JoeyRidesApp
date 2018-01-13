@@ -14,6 +14,15 @@
 
   <ion-content padding="true" class="has-header">
     <div class="spacer" style="width: 300px; height: 109px;"></div>
-      <ion-radio id="selectionSignUp-radio8" name="Selection" >Driver</ion-radio>
-      <ion-radio id="selectionSignUp-radio9" name="Selection">User</ion-radio>
+    <label>Do you want to sign up as (select any from below)</label>
+    <ion-list>
+      <ion-item>
+        <ion-label>Roo</ion-label>
+        <ion-radio  name="Selection" value="Roo" (click)="openPrompt()"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Joey</ion-label>
+        <ion-radio  name="Selection" value="Joey" (click)="openRegister()"></ion-radio>
+      </ion-item>
+    </ion-list>
   </ion-content>

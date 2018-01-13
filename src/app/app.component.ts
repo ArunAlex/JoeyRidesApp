@@ -3,8 +3,9 @@ import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
+import { HomePage } from '../pages/Landing/Landing';
 import { FareEstimatorPage } from '../pages/Joey/fare-estimator/fare-estimator'
+
 import { AuthServiceProvider } from '../providers/authService/authService';
 @Component({
   templateUrl: 'app.html'
@@ -22,16 +23,19 @@ export class MyApp {
     });
 
     this.pages = [
-      { title: 'Fare Estimator', component: FareEstimatorPage }
+      { title: 'Fare Estimator', component: FareEstimatorPage },
+      { title: 'Logout', component: null }
     ];
   }
 
   openPage(page) {
-    this.nav.setRoot(page.component);
-  }
-  logout(page) {
-    this.aService.logout();
-    this.nav.setRoot(HomePage);
+    if(page.component) {
+      this.nav.setRoot(page.component);
+    }
+    else {
+      this.aService.logout();
+      this.nav.setRoot(HomePage);
+    }
   }
 }
 

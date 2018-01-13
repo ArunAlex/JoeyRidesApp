@@ -18,8 +18,8 @@
   <!-- cordova.js required for cordova apps (remove if not needed) -->
   <script src="cordova.js"></script>
 
-  <link href="assets/ionic/css/ionic.css" rel="stylesheet">
-  <link href="build/main.css" rel="stylesheet">
+  <link href="assets/ionic/css/ionic.min.css" rel="stylesheet">
+  <link href="build/main.css" rel="stylesheet"> 
 
   <!-- un-comment this code to enable service worker
   <script>
@@ -29,18 +29,18 @@
         .catch(err => console.error('Error', err));
     }
   </script>-->
-
-  <script src="js/app.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/routes.js"></script>
+  <!--<script src="assets/ionic/js/ionic.bundle.min.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/controllers.js"></script>
+   <script src="assets/js/routes.js"></script>
   
-  <script src="js/directives.js"></script>
-  <script src="js/services.js"></script>
+  <script src="assets/js/directives.js"></script>
+  <script src="assets/js/services.js"></script> -->
 
 
 
 </head>
-<body>
+<body ng-app="app">
 
   <!-- Ionic's root component and where the app will load -->
   <ion-app></ion-app>

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../model/user';
@@ -9,7 +8,6 @@ import { AuthServiceProvider } from '../../providers/authService/authService';
 import { DatabaseProvider } from '../../providers/database/database';
 import { JoeyHomePage } from '../Joey/user-home/user-home';
 import { RooHomePage } from '../Roo/driver-home/driver-home';
-import { database } from 'firebase/app';
 /**
  * Generated class for the LoginPage page.
  *

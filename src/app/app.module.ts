@@ -9,11 +9,13 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { HomePage } from '../pages/Landing/Landing';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { JoeyHomePage } from '../pages/Joey/user-home/user-home';
 import { RooHomePage } from '../pages/Roo/driver-home/driver-home';
+import { UserRegisterPage } from '../pages/SignIn/user-register/user-register';
+import { DriverRegisterPage } from '../pages/SignIn/driver-register/driver-register';
 
 import { FIREBASE_CONFIG } from './app.firebase.config';
 import { AuthServiceProvider } from '../providers/authService/authService';
@@ -27,7 +29,9 @@ import { DatabaseProvider } from '../providers/database/database';
     LoginPage,
     SignupPage,
     JoeyHomePage,
-    RooHomePage
+    RooHomePage,
+    UserRegisterPage,
+    DriverRegisterPage
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,9 @@ import { DatabaseProvider } from '../providers/database/database';
     LoginPage,
     SignupPage,
     JoeyHomePage,
-    RooHomePage
+    RooHomePage,
+    UserRegisterPage,
+    DriverRegisterPage
   ],
   providers: [
     StatusBar,

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { User } from '../../model/user';
 
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -33,6 +33,11 @@ export class DatabaseProvider {
   }
 
   ngOnInit() {
+  }
+
+  async isValidCode(code){
+    //get from firebase database
+    return true;
   }
 
   async getUserById(id: string) {
