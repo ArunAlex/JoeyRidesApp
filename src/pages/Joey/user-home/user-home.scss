@@ -1,3 +1,11 @@
-page-user-home {
-
+ion-app._gmaps_cdv_ .nav-decor{
+    background-color: transparent !important;
 }
+
+
+page-user-home {
+    #map_canvas {
+        height: 100%;
+    }
+}
+
