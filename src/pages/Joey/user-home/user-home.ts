@@ -11,12 +11,15 @@ import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions } from '@ionic
  */
 
 @IonicPage()
+
+declare var google;
 @Component({
   selector: 'page-user-home',
   templateUrl: 'user-home.html',
 })
 export class JoeyHomePage {
-  map: GoogleMap;
+  //map: GoogleMap
+  map: any;
   @ViewChild('map') mapCanvas: ElementRef;
   constructor(private geolocation: Geolocation, public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -26,23 +29,26 @@ export class JoeyHomePage {
   }
 
   loadMap(){
-    this.geolocation.getCurrentPosition().then((resp) => {
-        let mapOptions: GoogleMapOptions = {
-          camera: {
-            target: {
-              lat: resp.coords.latitude,
-              lng: resp.coords.longitude
-            },
-            zoom: 18,
-            tilt: 30
-          }
-        };
+    this.geolocation.getCurrentPosition().then((position) => {
+        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        // let mapOptions: GoogleMapOptions = {
+        //   camera: {
+        //     target: {
+        //       lat: resp.coords.latitude,
+        //       lng: resp.coords.longitude
+        //     },
+        //     zoom: 18,
+        //     tilt: 30
+        //   }
+        // };
+        let mapOptions = {
+            center: latLng,
+            zoom: 15,
+            disableDefaultUI: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
     
-        this.map = GoogleMaps.create(this.mapCanvas.nativeElement, mapOptions);
-        this.map.one(GoogleMapsEvent.MAP_READY)
-        .then(() => {
-          console.log('Map is ready!');
-        });
+       this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
      }).catch((error) => {
        console.log('Error getting location', error);
      });
