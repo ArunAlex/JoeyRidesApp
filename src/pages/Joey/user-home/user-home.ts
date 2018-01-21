@@ -2,17 +2,15 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Geolocation } from '@ionic-native/geolocation';
-import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions } from '@ionic-native/google-maps';
+// import { GoogleMaps, GoogleMap, GoogleMapsEvent, GoogleMapOptions } from '@ionic-native/google-maps';
 /**
  * Generated class for the UserHomePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
-@IonicPage()
-
 declare var google;
+@IonicPage()
 @Component({
   selector: 'page-user-home',
   templateUrl: 'user-home.html',
