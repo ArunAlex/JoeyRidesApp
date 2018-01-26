@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../model/user';
 
-
 import { AuthServiceProvider } from '../../providers/authService/authService';
 import { DatabaseProvider } from '../../providers/database/database';
 import { JoeyHomePage } from '../Joey/user-home/user-home';

@@ -13,44 +13,53 @@
 </ion-header>
 
 
-<ion-content padding="true" class="has-header">
-  <form id="details-form7" class="list" ng-show="activeSection == 1">
+<ion-content padding="true">
+  <div [ngSwitch]="section">
+  <form id="details-form7" *ngSwitchCase="'1'">
+    <h3 id="details-heading9" class="title">Details</h3>
     <label class="item item-input" id="details-input3">
       <span class="input-label">Name</span>
-      <input type="text" placeholder="">
+      <input type="text" [(ngModel)]="user.name" name="Name">
     </label>
-    <div class="spacer" style="width: 300px; height: 15px;"></div>
+    <div class="spacer"></div>
     <label class="item item-input item-stacked-label" id="details-input4">
       <span class="input-label">Address</span>
-      <input type="text" placeholder="">
+      <input type="text" [(ngModel)]="user.address" name="Address">
     </label>
-    <div class="spacer" style="width: 300px; height: 15px;"></div>
+    <div class="spacer"></div>
     <label class="item item-input" id="details-input6">
       <span class="input-label">Phone</span>
-      <input type="tel" placeholder="">
+      <input type="tel" [(ngModel)]="user.phone" name="Phone">
     </label>
-    <div class="spacer" style="width: 300px; height: 21px;"></div>
+    <div class="spacer"></div>
     <label class="item item-input" id="details-input7">
       <span class="input-label">Email</span>
-      <input type="email" placeholder="">
+      <input type="email" [(ngModel)]="user.email" name="Email Address">
     </label>
-    <div class="spacer" style="width: 300px; height: 15px;"></div>
+    <div class="spacer"></div>
     <label class="item item-input" id="details-input8">
       <span class="input-label">Password</span>
-      <input type="password" placeholder="">
+      <input type="password" [(ngModel)]="user.password" name="Password">
     </label>
   </form>
-  <form id="details-form10" class="list" ng-show="activeSection == 2">
-    <h3 id="details-heading5" style="color:#000000;font-weight:600;text-align:center;">Account Setup</h3>
+  <form id="details-form10" *ngSwitchCase="'2'">
+    <h3 id="details-heading11" class="title">Account Setup</h3>
     <div id="details-markdown1" style="text-align:center;" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">Which account do you prefer to debit the payment?</p>
+      <p>Which account do you prefer to debit the payment?</p>
     </div>
-    <ion-radio id="details-radio4" name="Payment">Credit Card</ion-radio>
-    <ion-radio id="details-radio5" name="Payment">Bank Account</ion-radio>
+    <ion-radio id="details-radio4" title="Credit Card" name="Payment"></ion-radio>
+    <ion-radio id="details-radio5" title="Bank Account" name="Payment"></ion-radio>
   </form>
-  <div id="details-button-bar1" class="button-bar">
-    <button id="details-button14" ng-class="{'active':activeSection==1}" (click)="changeSection(1)" class="button button-positive button-block">1</button>
-    <button id="details-button16" ng-class="{'active':activeSection==2}" (click)="changeSection(3)" class="button button-positive button-block">2</button>
-  </div>
+</div>
+<div class="spacer"></div>
+<div class="spacer"></div>
+<div class="spacer"></div>
+<ion-toolbar>
+    <ion-segment [(ngModel)]="section">
+      <ion-segment-button value="1">1</ion-segment-button>
+      <ion-segment-button value="2">2 </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+<button id="login-button11" class="button button-positive button-block" (click)='register(user)'>Register</button>
 </ion-content>
 

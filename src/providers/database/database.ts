@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { User } from '../../model/user';
 
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -14,15 +14,15 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class DatabaseProvider {
-  // joeyItemsCollection: AngularFirestoreCollection<User>; //Firestore collection
-  // rooItemsCollection: AngularFirestoreCollection<User>; //Firestore collection
-  // items: Observable<User[]>; // read collection
+  itemsCollection: AngularFirestoreCollection<User>; //Firestore collection
+  //rooItemsCollection: AngularFirestoreCollection<User>; //Firestore collection
+  //items: Observable<User[]>; // read collection
   userDoc: AngularFirestoreDocument<User>;
   user: Observable<User>;
   
 
   constructor(private afs: AngularFirestore) {
-    // this.joeyItemsCollection = this.afs.collection('Users');// ref => ref.where('isJoey','==','true')
+    this.itemsCollection = this.afs.collection('Users');// ref => ref.where('isJoey','==','true')
     // this.items = this.joeyItemsCollection.snapshotChanges().map(changes => {
     //   return  changes.map(a=>{
     //     const data = a.payload.doc.data() as User;
@@ -43,5 +43,21 @@ export class DatabaseProvider {
   async getUserById(id: string) {
     this.userDoc = this.afs.doc('Users/'+ id);
     this.user = this.userDoc.valueChanges();
+  }
+
+  async addUser(user: User, id: string){
+    return this.itemsCollection.doc(id).set({
+      name: user.name,
+      address: user.address,
+      email: user.email,
+      password: user.password,
+      isJoey: user.isJoey
+    })
+    .then(() => {
+      return true;
+    })
+    .catch(() =>{
+      return false;
+    });
   }
 }

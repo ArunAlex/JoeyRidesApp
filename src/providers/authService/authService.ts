@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { DatabaseProvider } from '../database/database';
+import { User } from '../../model/user';
 
 /*
   Generated class for the AuthProvider provider.
@@ -13,6 +14,13 @@ export class AuthServiceProvider {
   authState: any = null;
   constructor(private afAuth: AngularFireAuth, private database: DatabaseProvider) {
    
+  }
+
+  async registerWithEmail(user: User){
+    return this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
+    .then((user) => {
+      this.authState = user;
+    })
   }
   
   async loginWithEmail(email: string, password: string) {
