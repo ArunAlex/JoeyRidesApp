@@ -44,19 +44,29 @@
     </form>
     <form id="details-form8" *ngSwitchCase="'2'">
       <h3 id="details-heading6" class="title">Kids Details</h3>
-      <ion-item class="item-avatar item-icon-right" id="details-list-item6">
-        <h2>Item</h2>
-        <i class="icon ion-arrow-right-b icon-accessory"></i>
-      </ion-item>
-      <button id="details-button17" class="button button-positive button-block">Add</button>
+      <ion-list>
+        <ion-item *ngFor="let c of child" class="item-avatar item-icon-right" id="details-list-item6">
+          {{c.fullname}}
+          <i class="icon ion-arrow-right-b icon-accessory"></i>
+        </ion-item>
+      </ion-list>
+      <button id="details-button17" class="button button-positive button-block" (click)="presentModalChild()">Add</button>
     </form>
     <form id="details-form10" *ngSwitchCase="'3'">
       <h3 id="details-heading5" class="title">Account Setup</h3>
       <div id="details-markdown1">
         <p>Which account do you prefer to debit the payment?</p>
       </div>
-      <ion-radio id="details-radio4" title="Credit Card" name="Payment"></ion-radio>
-      <ion-radio id="details-radio5" title="Bank Account" name="Payment">Bank Account</ion-radio>
+      <ion-list>
+        <ion-item>
+          <ion-label text-center>Credit Card</ion-label>
+          <ion-radio id="details-radio4" title="Credit Card" name="Payment" value="credit" (click)="presentModal('Credit')"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label text-center>Bank Account</ion-label>
+          <ion-radio id="details-radio5" title="Bank Account" name="Payment" value="bank" (click)="presentModal('Bank')"></ion-radio>
+        </ion-item>
+      </ion-list>
     </form>
   </div>
   <div class="spacer"></div>

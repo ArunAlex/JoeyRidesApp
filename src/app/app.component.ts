@@ -4,7 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/Landing/Landing';
-import { FareEstimatorPage } from '../pages/Joey/fare-estimator/fare-estimator'
+import { FareEstimatorPage } from '../pages/Joey/fare-estimator/fare-estimator';
+import { UserSchedulePage } from '../pages/Joey/user-schedule/user-schedule';
 
 import { AuthServiceProvider } from '../providers/authService/authService';
 @Component({
@@ -24,6 +25,7 @@ export class MyApp {
 
     this.pages = [
       { title: 'Fare Estimator', component: FareEstimatorPage },
+      { title: 'Schedule', component: UserSchedulePage },
       { title: 'Logout', component: null }
     ];
   }

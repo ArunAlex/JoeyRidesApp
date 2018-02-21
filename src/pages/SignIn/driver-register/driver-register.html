@@ -47,8 +47,16 @@
     <div id="details-markdown1" style="text-align:center;" class="show-list-numbers-and-dots">
       <p>Which account do you prefer to debit the payment?</p>
     </div>
-    <ion-radio id="details-radio4" title="Credit Card" name="Payment"></ion-radio>
-    <ion-radio id="details-radio5" title="Bank Account" name="Payment"></ion-radio>
+    <ion-list>
+      <ion-item>
+        <ion-label text-center>Credit Card</ion-label>
+        <ion-radio id="details-radio4" title="Credit Card" name="Payment" value="credit" (click)="presentModal('Credit')"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label text-center>Bank Account</ion-label>
+        <ion-radio id="details-radio5" title="Bank Account" name="Payment" value="bank" (click)="presentModal('Bank')"></ion-radio>
+      </ion-item>
+    </ion-list>
   </form>
 </div>
 <div class="spacer"></div>

@@ -13,37 +13,37 @@ import { User } from '../../model/user';
 export class AuthServiceProvider {
   authState: any = null;
   constructor(private afAuth: AngularFireAuth, private database: DatabaseProvider) {
-   
+
   }
 
-  async registerWithEmail(user: User){
+  async registerWithEmail(user: User) {
     return this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
-    .then((user) => {
-      this.authState = user;
-    })
+      .then((user) => {
+        this.authState = user;
+      });
   }
-  
+
   async loginWithEmail(email: string, password: string) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      this.authState = user;
-    })
-    .catch(error => {
-      console.log(error)
-      throw error;
-    });
+      .then((user) => {
+        this.authState = user;
+      })
+      .catch(error => {
+        console.log(error)
+        throw error;
+      });
   }
 
   async logout() {
     return this.afAuth.auth.signOut()
-    .then(() => {
-      this.authState = null;
-      this.database.user = null;
-      this.database.userDoc = null;
-    })
-    .catch(error => {
-      console.log(error)
-      throw error;
-    });
+      .then(() => {
+        this.authState = null;
+        this.database.user = null;
+        this.database.userDoc = null;
+      })
+      .catch(error => {
+        console.log(error)
+        throw error;
+      });
   }
 }

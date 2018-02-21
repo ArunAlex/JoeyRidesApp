@@ -13,19 +13,30 @@
 </ion-header>
 
 <ion-content padding>
-  <img src="../assets/imgs/joeyroo.png" class="img-responsive"/>
+  <img src="../assets/imgs/joeyroo.png" class="img-responsive" />
   <h1 id="login-heading2" class="header-title">Joey Rides</h1>
-  <form id="login-form3" class="list">
+  <form id="login-form3" class="list" [formGroup]="loginForm">
     <ion-list id="login-list1">
       <label class="item item-input" id="login-input1">
         <span class="input-label">Email Address</span>
-        <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email">
+        <input type="email" [formControl]="loginForm.controls['email']" placeholder="Email" [(ngModel)]="user.email" name="email">
+        <div *ngIf="!loginForm.controls.email.valid &&
+        loginForm.controls.email.dirty" class="validator-error">
+          Please enter a valid email.
+        </div>
       </label>
       <label class="item item-input" id="login-input2">
         <span class="input-label">Password</span>
-        <input type="password" placeholder="Password" [(ngModel)]="user.password" name="password">
+        <input type="password" [formControl]="loginForm.controls['password']" placeholder="Password" [(ngModel)]="user.password"
+          name="password">
+          <div *ngIf="!loginForm.controls.password.valid &&
+          loginForm.controls.password.dirty"
+        class="validator-error">
+      Please enter a valid password.
+    </div>
+
       </label>
     </ion-list>
-    <button id="login-button9" class="button button-positive button-block" (click)='login(user)'>Log in</button>
+    <button id="login-button9" class="button button-positive button-block"  [disabled]="!loginForm.valid" (click)='login(user)'>Log in</button>
   </form>
 </ion-content>

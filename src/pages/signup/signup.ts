@@ -19,41 +19,38 @@ import { DriverRegisterPage } from '../SignIn/driver-register/driver-register'
 })
 export class SignupPage {
 
-  constructor(public navCtrl: NavController,private database: DatabaseProvider, public navParams: NavParams, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, private database: DatabaseProvider, public navParams: NavParams, public alertCtrl: AlertController) {
   }
 
   openRegister() {
     this.navCtrl.push(UserRegisterPage);
   }
 
-  openPrompt(){
+  openPrompt() {
     let alert = this.alertCtrl.create({
       title: 'Enter Code',
       message: 'Please enter the code provided by JoeyRides',
-      inputs: [
-        {
-          name:'code',
+      inputs: [{
+          name: 'code',
           type: 'password'
         }
       ],
-      buttons: [
-        {
+      buttons: [{
           text: 'No',
           role: 'cancel',
-        },
-        {
+        },{
           text: 'Yes',
           handler: data => {
             this.database.isValidCode(data.code)
-            .then((result)=>{
-              if(result){
-                this.navCtrl.push(DriverRegisterPage);
-              }
-              else {
-                // invalid login
-                return false;
-              }
-            });
+              .then((result) => {
+                if (result) {
+                  this.navCtrl.push(DriverRegisterPage);
+                }
+                else {
+                  // invalid login
+                  return false;
+                }
+              });
           }
         }
       ]

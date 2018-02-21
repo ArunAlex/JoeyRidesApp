@@ -16,7 +16,6 @@ declare var google;
   templateUrl: 'user-home.html',
 })
 export class JoeyHomePage {
-  //map: GoogleMap
   map: any;
   @ViewChild('map') mapCanvas: ElementRef;
   constructor(private geolocation: Geolocation, public navCtrl: NavController, public navParams: NavParams) {
@@ -29,16 +28,6 @@ export class JoeyHomePage {
   loadMap(){
     this.geolocation.getCurrentPosition().then((position) => {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        // let mapOptions: GoogleMapOptions = {
-        //   camera: {
-        //     target: {
-        //       lat: resp.coords.latitude,
-        //       lng: resp.coords.longitude
-        //     },
-        //     zoom: 18,
-        //     tilt: 30
-        //   }
-        // };
         let mapOptions = {
             center: latLng,
             zoom: 15,

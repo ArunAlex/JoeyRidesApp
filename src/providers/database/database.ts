@@ -14,15 +14,15 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class DatabaseProvider {
-  itemsCollection: AngularFirestoreCollection<User>; //Firestore collection
-  //rooItemsCollection: AngularFirestoreCollection<User>; //Firestore collection
-  //items: Observable<User[]>; // read collection
+  userCollection: AngularFirestoreCollection<User>;
+  childCollection: AngularFirestoreCollection<User>;
   userDoc: AngularFirestoreDocument<User>;
   user: Observable<User>;
-  
+  count: number;
+
 
   constructor(private afs: AngularFirestore) {
-    this.itemsCollection = this.afs.collection('Users');// ref => ref.where('isJoey','==','true')
+    this.userCollection = this.afs.collection('Users');// ref => ref.where('isJoey','==','true')
     // this.items = this.joeyItemsCollection.snapshotChanges().map(changes => {
     //   return  changes.map(a=>{
     //     const data = a.payload.doc.data() as User;
@@ -35,29 +35,40 @@ export class DatabaseProvider {
   ngOnInit() {
   }
 
-  async isValidCode(code){
+  async isValidCode(code) {
     //get from firebase database
     return true;
   }
 
   async getUserById(id: string) {
-    this.userDoc = this.afs.doc('Users/'+ id);
+    this.userDoc = this.afs.doc('Users/' + id);
     this.user = this.userDoc.valueChanges();
   }
 
-  async addUser(user: User, id: string){
-    return this.itemsCollection.doc(id).set({
-      name: user.name,
-      address: user.address,
-      email: user.email,
-      password: user.password,
-      isJoey: user.isJoey
-    })
-    .then(() => {
-      return true;
-    })
-    .catch(() =>{
-      return false;
-    });
+  async addUser(user: User, id: string) {
+    return this.userCollection.doc(id)
+      .set({
+        name: user.name,
+        address: user.address,
+        email: user.email,
+        password: user.password,
+        isJoey: user.isJoey
+      }).then(() => {
+        this.count = 0;
+        user.child.forEach((c) => {
+          this.userCollection.doc(id).collection('Kids').doc('Kids' + id + this.count)
+            .set({
+              name: c.fullname
+            }).catch(() => {
+              return false;
+            });
+          ++this.count;
+        });
+        return true;
+      }).catch(() => {
+        return false;
+      });
+
+
   }
 }
