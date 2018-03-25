@@ -10,10 +10,22 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Schedule</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="addEvent()">
+        <ion-icon name="add" color="light" style="zoom:1.0;"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content padding>
-  <ion-calendar #calendar></ion-calendar>
+<ion-content>
+  <mbsc-form>
+    <mbsc-eventcalendar [data]="myEvents"></mbsc-eventcalendar>
+  </mbsc-form>
+  <ion-buttons end class="bet_time">
+    <button ion-button icon-only clear large (click)="addEvent()">
+      <ion-icon name="add-circle" md="md-add-circle" style="zoom:1.0;"></ion-icon>
+    </button>
+  </ion-buttons>
 </ion-content>

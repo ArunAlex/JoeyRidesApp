@@ -5,6 +5,11 @@ import { User } from '../../model/user';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { Child } from '../../model/child';
+
+// We MUST import both the firebase AND firestore modules like so
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 /*
   Generated class for the DatabaseProvider provider.
@@ -14,22 +19,17 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class DatabaseProvider {
+  _DB: any;
   userCollection: AngularFirestoreCollection<User>;
   childCollection: AngularFirestoreCollection<User>;
   userDoc: AngularFirestoreDocument<User>;
   user: Observable<User>;
+
   count: number;
 
 
-  constructor(private afs: AngularFirestore) {
-    this.userCollection = this.afs.collection('Users');// ref => ref.where('isJoey','==','true')
-    // this.items = this.joeyItemsCollection.snapshotChanges().map(changes => {
-    //   return  changes.map(a=>{
-    //     const data = a.payload.doc.data() as User;
-    //     const id = a.payload.doc.id;
-    //     return {id, ...data};
-    //   });
-    // });
+  constructor() {
+    this._DB = firebase.firestore();
   }
 
   ngOnInit() {
@@ -40,9 +40,35 @@ export class DatabaseProvider {
     return true;
   }
 
-  async getUserById(id: string) {
-    this.userDoc = this.afs.doc('Users/' + id);
-    this.user = this.userDoc.valueChanges();
+  async getUserById(id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._DB
+        .collection('Users')
+        .doc(id)
+        .get()
+        .then((snapshot) => {
+          resolve(snapshot.data());
+        });
+    });
+  }
+
+  async getKidsById(id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._DB
+        .collection('Users')
+        .doc(id)
+        .collection('Kids')
+        .get()
+        .then((snapshot) => {
+          let child: Array<Child>;
+          child = [];
+          snapshot
+            .forEach((doc: any) => {
+              child.push(doc.data());
+            });
+            resolve(child);
+        });
+    });
   }
 
   async addUser(user: User, id: string) {

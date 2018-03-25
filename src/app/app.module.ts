@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { MbscModule } from '@mobiscroll/angular-trial';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -25,12 +27,15 @@ import { UserSchedulePage } from '../pages/Joey/user-schedule/user-schedule';
 import { ModalCreditPage } from '../pages/Modals/modal-credit/modal-credit';
 import { ModalBankAccountPage } from '../pages/Modals/modal-bank-account/modal-bank-account';
 import { ModalChildPage } from '../pages/Modals/modal-child/modal-child';
+import { ModalSchedulePage } from '../pages/Modals/modal-schedule/modal-schedule';
 
 import { FIREBASE_CONFIG } from './app.firebase.config';
 import { AuthServiceProvider } from '../providers/authService/authService';
 import { DatabaseProvider } from '../providers/database/database';
 import { ValidatorProvider } from '../providers/validators/validator';
 import { StripeProvider } from '../providers/stripe/stripe';
+import { ModalSchedulePageModule } from '../pages/Modals/modal-schedule/modal-schedule.module';
+
 
 
 @NgModule({
@@ -46,9 +51,12 @@ import { StripeProvider } from '../providers/stripe/stripe';
     UserSchedulePage,
     ModalCreditPage,
     ModalBankAccountPage,
-    ModalChildPage
+    ModalChildPage,
+    ModalSchedulePage
   ],
-  imports: [
+  imports: [ 
+    FormsModule, 
+    MbscModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
@@ -69,7 +77,8 @@ import { StripeProvider } from '../providers/stripe/stripe';
     UserSchedulePage,
     ModalCreditPage,
     ModalBankAccountPage,
-    ModalChildPage
+    ModalChildPage,
+    ModalSchedulePage
   ],
   providers: [
     StatusBar,

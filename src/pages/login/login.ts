@@ -60,8 +60,7 @@ export class LoginPage {
       .then(() => {
         var uid = this.aService.authState.uid;
         this.database.getUserById(uid)
-          .then(() => {
-            this.database.user.subscribe(data => {
+          .then((data) => {
               loading.dismiss();
               if (data.isJoey) {
                 this.navCtrl.setRoot(JoeyHomePage);
@@ -69,7 +68,6 @@ export class LoginPage {
               else {
                 this.navCtrl.setRoot(RooHomePage);
               }
-            });
           });
       });
   }

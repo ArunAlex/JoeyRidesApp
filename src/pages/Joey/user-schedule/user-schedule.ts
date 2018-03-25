@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { ModalSchedulePage } from '../../Modals/modal-schedule/modal-schedule';
 
 /**
  * Generated class for the UserSchedulePage page.
@@ -14,11 +15,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'user-schedule.html',
 })
 export class UserSchedulePage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+    public modalCtrl: ModalController,
+    public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
+  addEvent() {
+    let modal = this.modalCtrl.create(ModalSchedulePage);
+    modal.onDidDismiss(data => {
+      console.log('closed schedule');
+    });
+    modal.present();
   }
-
 }
