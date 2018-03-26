@@ -1,5 +1,5 @@
-import { FormsModule } from '@angular/forms';
 import { MbscModule } from '@mobiscroll/angular-trial';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -55,8 +55,8 @@ import { ModalSchedulePageModule } from '../pages/Modals/modal-schedule/modal-sc
     ModalSchedulePage
   ],
   imports: [ 
+    MbscModule, 
     FormsModule, 
-    MbscModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
