@@ -1,4 +1,4 @@
-import { MbscModule } from '@mobiscroll/angular-trial';
+import { MbscModule } from '@mobiscroll/angular';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
