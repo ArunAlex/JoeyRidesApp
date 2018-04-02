@@ -1,6 +1,6 @@
 module.exports = {
   copyMobiscrollCss: {
-    src: ['{{ROOT}}/node_modules/@mobiscroll/angular/dist/css/*', '{{ROOT}}/node_modules/@mobiscroll/angular-lite/dist/css/*'],
+    src: ['{{ROOT}}/src/lib/mobiscroll/css/*'],
     dest: '{{WWW}}/lib/mobiscroll/css/'
   }
 }

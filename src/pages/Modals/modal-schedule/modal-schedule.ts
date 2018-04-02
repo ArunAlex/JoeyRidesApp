@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, Navbar, LoadingController, AlertCo
 import { DatabaseProvider } from '../../../providers/database/database';
 import { AuthServiceProvider } from '../../../providers/authService/authService';
 
-import { mobiscroll } from '@mobiscroll/angular';
+import { mobiscroll } from '../../../lib/mobiscroll/js/mobiscroll.custom-4.1.0.min';
 import { Schedule } from '../../../model/schedule';
 /**
  * Generated class for the ModalSchedulePage page.

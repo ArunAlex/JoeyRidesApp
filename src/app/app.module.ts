@@ -1,4 +1,4 @@
-import { MbscModule } from '@mobiscroll/angular';
+import { MbscModule } from '../lib/mobiscroll/js/mobiscroll.custom-4.1.0.min';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
