@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 
 import { User } from '../../model/user';
+import { Schedule } from '../../model/schedule';
+import { Child } from '../../model/child';
 
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { Child } from '../../model/child';
+
 
 // We MUST import both the firebase AND firestore modules like so
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+
 
 /*
   Generated class for the DatabaseProvider provider.
@@ -28,7 +31,8 @@ export class DatabaseProvider {
   count: number;
 
 
-  constructor() {
+  constructor(afs: AngularFirestore) {
+    this.userCollection = afs.collection('Users');
     this._DB = firebase.firestore();
   }
 
@@ -66,13 +70,48 @@ export class DatabaseProvider {
             .forEach((doc: any) => {
               child.push(doc.data());
             });
-            resolve(child);
+          resolve(child);
         });
     });
   }
 
+  async getSchedules(id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._DB
+        .collection('Users')
+        .doc(id)
+        .collection('Schedules')
+        .get()
+        .then((snapshot) => {
+          let schedules: Array<Schedule>;
+          schedules = [];
+          snapshot
+            .forEach((doc: any) => {
+              schedules.push(doc.data());
+            });
+          resolve(schedules);
+        });
+    });
+  }
+
+  async addSchedule(schedule: Schedule, id: string) {
+    return this.userCollection
+      .doc(id).collection('Schedules')
+      .doc('Schedule' + id + schedule.title)
+      .set({
+        title: schedule.title,
+        pickupLocation: schedule.locationPickUp,
+        dropoffLocation: schedule.locationDropOff,
+        startAndEndDate: schedule.startEndDate,
+        pickupTime: schedule.pickupTime,
+        returnTime: schedule.returnTime,
+        kids: schedule.kids
+      });
+  }
+
   async addUser(user: User, id: string) {
-    return this.userCollection.doc(id)
+    return this.userCollection
+      .doc(id)
       .set({
         name: user.name,
         address: user.address,
@@ -82,7 +121,9 @@ export class DatabaseProvider {
       }).then(() => {
         this.count = 0;
         user.child.forEach((c) => {
-          this.userCollection.doc(id).collection('Kids').doc('Kids' + id + this.count)
+          this.userCollection
+            .doc(id).collection('Kids')
+            .doc('Kids' + id + this.count)
             .set({
               name: c.fullname
             }).catch(() => {
@@ -94,7 +135,5 @@ export class DatabaseProvider {
       }).catch(() => {
         return false;
       });
-
-
   }
 }

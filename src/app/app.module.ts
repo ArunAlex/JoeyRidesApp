@@ -1,4 +1,4 @@
-import { MbscModule } from '../lib/mobiscroll/js/mobiscroll.custom-4.1.0.min';
+import { MbscModule } from '../lib/mobiscroll/js/mobiscroll.custom-4.1.1.min';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -35,6 +35,7 @@ import { DatabaseProvider } from '../providers/database/database';
 import { ValidatorProvider } from '../providers/validators/validator';
 import { StripeProvider } from '../providers/stripe/stripe';
 import { ModalSchedulePageModule } from '../pages/Modals/modal-schedule/modal-schedule.module';
+import { ModalSavedSchedulesPage } from '../pages/Modals/modal-saved-schedules/modal-saved-schedules';
 
 
 
@@ -52,10 +53,11 @@ import { ModalSchedulePageModule } from '../pages/Modals/modal-schedule/modal-sc
     ModalCreditPage,
     ModalBankAccountPage,
     ModalChildPage,
-    ModalSchedulePage
+    ModalSchedulePage,
+    ModalSavedSchedulesPage
   ],
   imports: [ 
-    MbscModule, 
+    MbscModule,
     FormsModule, 
     BrowserModule,
     IonicModule.forRoot(MyApp),
@@ -78,7 +80,8 @@ import { ModalSchedulePageModule } from '../pages/Modals/modal-schedule/modal-sc
     ModalCreditPage,
     ModalBankAccountPage,
     ModalChildPage,
-    ModalSchedulePage
+    ModalSchedulePage,
+    ModalSavedSchedulesPage
   ],
   providers: [
     StatusBar,

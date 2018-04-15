@@ -3,8 +3,10 @@ import { IonicPage, NavController, NavParams, Navbar, LoadingController, AlertCo
 import { DatabaseProvider } from '../../../providers/database/database';
 import { AuthServiceProvider } from '../../../providers/authService/authService';
 
-import { mobiscroll } from '../../../lib/mobiscroll/js/mobiscroll.custom-4.1.0.min';
+import { mobiscroll, MbscRangeOptions } from '../../../lib/mobiscroll/js/mobiscroll.custom-4.1.1.min';
 import { Schedule } from '../../../model/schedule';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UserSchedulePage } from '../../Joey/user-schedule/user-schedule';
 /**
  * Generated class for the ModalSchedulePage page.
  *
@@ -53,16 +55,10 @@ export class ModalSchedulePage {
     display: 'bottom'
   };
 
-  dateSettings: any = {
-
-    display: 'bottom',
-    startInput: '#startDate',
-    endInput: '#endDate',
-    controls: ['date']
-  };
   nonFormSettings: any = {
 
-    display: 'bottom'
+    display: 'bottom',
+    controls: ['date']
   };
 
   h24Settings: any = {
@@ -71,44 +67,72 @@ export class ModalSchedulePage {
     timeFormat: 'HH:ii'
   };
 
-  demoSettings: any = {
-
+  rangeSettings: MbscRangeOptions = {
     display: 'bottom',
-    controls: ['calendar', 'time'],
-    startInput: '#startDate',
-    endInput: '#endDate'
+    startInput: '#start',
+    endInput: '#end'
   };
 
+  nonTimePickUpFormSettings: any = {
+    display: 'bottom',
+    controls: ['time'],
+    steps: {
+      minute: 15
+    }
+  };
+
+  nonTimeDropoffFormSettings: any = {
+    display: 'bottom',
+    controls: ['time'],
+    steps: {
+      minute: 15
+    }
+  };
+
+  nonDateFormSettings: MbscRangeOptions = {
+    display: 'bottom'
+  };
+
+
+  scheduleForm: FormGroup;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private authService: AuthServiceProvider,
     private database: DatabaseProvider,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private formBuilder: FormBuilder) {
+
+    this.scheduleForm = this.formBuilder.group({
+      titlename: ['', [Validators.required, Validators.minLength(2)]],
+      locationPickUp: ['', Validators.required],
+      locationDropoff: ['', Validators.required],
+      startEndDate: ['', Validators.required],
+      pickupTime: ['', Validators.required]
+    });
+
     var self = this;
-    this.database.getKidsById(this.authService.authState.uid)
+    self.database.getKidsById(self.authService.authState.uid)
       .then((data) => {
         data.forEach(element => {
           self.children.push({ value: element.name, text: element.name });
         });
-      })
+      });
   }
-
 
   ionViewDidLoad() {
-    var inputElement1 = document.getElementById("autocompletePickUp").getElementsByTagName("input")[0];
+    var inputElement1 = document.getElementsByName("locationPickUp")[0].getElementsByTagName("input")[0];
     this.autocompletePickup = new google.maps.places.Autocomplete(inputElement1,
       { types: ['geocode'] });
-    this.autocompletePickup.addListener('place_changed', this.fillInAddress1);
+    this.autocompletePickup.addListener('place_changed', this.fillInAddress.bind(this.autocompletePickup, inputElement1, this.schedule.locationPickUp));
 
-    var inputElement2 = document.getElementById("autocompleteDropOff").getElementsByTagName("input")[0];
+    var inputElement2 = document.getElementsByName("locationDropoff")[0].getElementsByTagName("input")[0];
     this.autocompleteDropOff = new google.maps.places.Autocomplete(inputElement2,
       { types: ['geocode'] });
-    this.autocompleteDropOff.addListener('place_changed', this.fillInAddress2);
+    this.autocompleteDropOff.addListener('place_changed', this.fillInAddress.bind(this.autocompleteDropOff, inputElement2, this.schedule.locationDropOff));
   }
 
-
-  fillInAddress1() {
+  fillInAddress(input, location) {
     var componentForm = {
       street_number: 'short_name',
       route: 'long_name',
@@ -117,7 +141,6 @@ export class ModalSchedulePage {
       country: 'long_name',
       postal_code: 'short_name'
     };
-    var inputElement = document.getElementById("autocompletePickUp").getElementsByTagName("input")[0];
     var place = this.getPlace();
     var val = '';
     for (var i = 0; i < place.address_components.length; i++) {
@@ -125,80 +148,92 @@ export class ModalSchedulePage {
       var value = place.address_components[i][componentForm[addressType]];
       if (value) {
         if (val == '') {
-            val = value;
+          val = value;
         }
         else {
           val += (addressType == 'country' || addressType == 'postal_code' ? ', ' : ' ') + value;
         }
       }
     }
-    inputElement.value = val;
+    input.value = location = val;
   }
 
-
-  fillInAddress2() {
-    var componentForm = {
-      street_number: 'short_name',
-      route: 'long_name',
-      locality: 'long_name',
-      administrative_area_level_1: 'short_name',
-      country: 'long_name',
-      postal_code: 'short_name'
-    };
-    var inputElement = document.getElementById("autocompleteDropOff").getElementsByTagName("input")[0];
-    var place = this.getPlace();
-    var val = '';
-    for (var i = 0; i < place.address_components.length; i++) {
-      var addressType = place.address_components[i].types[0];
-      var value = place.address_components[i][componentForm[addressType]];
-      if (value) {
-        if (val == '') {
-            val = value;
-        }
-        else {
-          val += (addressType == 'country' || addressType == 'postal_code' ? ', ' : ' ') + value;
+  getErrorMessage(field: string) {
+    var message = '';
+    var ctrl = this.scheduleForm.get(field);
+    if (ctrl && ctrl.errors) {
+      for (var err in ctrl.errors) {
+        if (!message && ctrl.errors[err]) {
+          message = this.errorMessages[field][err];
         }
       }
     }
-    inputElement.value = val;
+    return message;
   }
 
-
-  showConfirm = () => {
+  showConfirm() {
+    var self = this;
     mobiscroll.confirm({
-      title: 'Trip Name',
+      title: 'Confirm Trip Name',
       message:
         '<b>Estimated Cost of Trip:</b>' + '$12.00' +
         '<br\>' +
         '<br\>' +
-        '<b>Pickup Start:</b>' + '09/03/2019 07:30 AM' +
+        '<b>Pickup Time Range:</b>' + self.schedule.pickupTime[0] + '-' + self.schedule.pickupTime[1] +
         '<br\>' +
-        '<b>Drop-off End:</b>' + '09/03/2019 04:30 PM' +
+        '<b>Pick-up Location:</b>' + self.schedule.locationPickUp +
         '<br\>' +
-        '<b>Pick-up Location:</b>' + 'Unit 1, 2 Orange Grove, Castle Hill, NSW' +
+        '<b>Drop-off Location:</b>' + self.schedule.locationDropOff +
         '<br\>' +
-        '<b>Drop-off Location:</b>' + '24 Les Shore Place, Castle Hill, NSW' +
-        '<br\>' +
-        '<b>Roos:</b>' + 'Isabella and Neil',
+        '<b>Kids:</b>' + self.schedule.kids,
       okText: 'Agree',
       cancelText: 'Disagree',
       callback: (res) => {
-        console.log('Function Called');
-        let loader = this.loadingCtrl.create({
-          content: "Please wait...",
-          enableBackdropDismiss: true
-        });
-        loader.present();
-        setTimeout(() => {
-          //this.navCtrl.push(ScheduleBooked);
-        }, 5000);
+        if (res == true) {
+          let loader = this.loadingCtrl.create({
+            content: "Please wait...",
+            enableBackdropDismiss: true
+          });
+          loader.present();
+          self.database.addSchedule(this.schedule, self.authService.authState.uid)
+            .then(() => {
+              loader.dismiss();
+              mobiscroll.toast({
+                message: 'Trip Request Posted. Your trip will be confirmed in 30mins'
+              });
+              this.navCtrl.pop();
+            })
+            .catch(() => {
 
-        setTimeout(() => {
-          loader.dismiss();
-        }, 5000);
-
+            });
+        }
+        else {
+          this.navCtrl.pop();
+        }
       }
     });
+  }
+
+  errorMessages = {
+    titlename: {
+      required: 'Title required',
+      minlength: 'Has to be at least 2 characters'
+    },
+    locationPickUp: {
+      required: 'Pickup Location required'
+    },
+    locationDropoff: {
+      required: 'Drop-off Location required'
+    },
+    startEndDate: {
+      required: 'From Date required'
+    },
+    pickupTime: {
+      required: 'Pick-Up Time required'
+    },
+    kids: {
+      required: 'Add atleast one kid'
+    }
   }
 
 }

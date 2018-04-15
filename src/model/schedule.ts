@@ -1,9 +1,11 @@
+
 export interface Schedule {
     title: string;
-    startDate: Date;
-    endDate: Date;
-    locationPickup:string;
+    startEndDate: Date;
+    pickupTime: TimeRanges;
+    returnTime: TimeRanges;
+    locationPickUp: string;
     locationDropOff: string;
     kids: string;
-    reminder:string;
+    reminder: string;
 }

@@ -1,0 +1,38 @@
+<!--
+  Generated template for the ModalSavedSchedulesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title color="default">
+            Saved Trips
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<mbsc-note color="primary">Swipe left/right to clear cards.</mbsc-note>
+
+<ion-content>
+    <mbsc-form>
+        <mbsc-listview>
+            <mbsc-listview-item mbsc-card *ngFor="let item of data">
+                <mbsc-card-content>
+                    <mbsc-card-title class="mbsc-bold"> {{item.title}}</mbsc-card-title>
+                    <b>Pickup Location:</b>{{item.pickupLocation}}
+                    <br>
+                    <b>Dropoff Location:</b> {{item.dropoffLocation}}
+                    <br>
+                    <b>Return Trip:</b> {{item.ReturnTrip}}
+                    <br>
+                    <b>Joey's:</b> {{item.Joeys}}
+                </mbsc-card-content>
+                <mbsc-card-footer>
+                    <mbsc-button flat icon="line-calendar" (click)="addTrip()">Use Trip</mbsc-button>
+                    <mbsc-button flat icon="share">Share</mbsc-button>
+                </mbsc-card-footer>
+            </mbsc-listview-item>
+        </mbsc-listview>
+    </mbsc-form>
+</ion-content>

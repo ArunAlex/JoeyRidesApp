@@ -5,6 +5,8 @@ export { MbscRangeOptions };
 export declare class MbscRange extends MbscCalBase {
     optionService: MbscOptionsService;
     _instance: RangePicker;
+    _startInput: string | HTMLElement;
+    _endInput: string | HTMLElement;
     autoCorrect: boolean;
     controls: 'time' | 'date' | 'calendar';
     endInput: string | HTMLElement;
