@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>New Schedule</ion-title>
   </ion-navbar>
 
@@ -14,71 +14,11 @@
 
 
 <ion-content padding>
-  <!-- <mbsc-form [options]="formSettings">
-    <form [formGroup]="scheduleForm" novalidate>
-      <div>
-        <mbsc-input placeholder="Title" formControlName="titlename" [errorMessage]="getErrorMessage('titlename')"
-          placeholder="Title" data-icon="material-format-ital"></mbsc-input>
-      </div>
-      <div>
-        <ion-input type="text" id="autocompletePickUp" formControlName="locationPickUp" placeholder="Picked-up From" data-icon="location"></ion-input>
-        <ion-item *ngIf="scheduleForm.controls.locationPickUp.dirty && form.controls.locationPickUp.invalid">
-            <p *ngIf="scheduleForm.controls.locationPickUp.errors.required">Pickup Location required</p>
-        </ion-item>
-      </div>
-      <div>
-        <ion-input type="text" id="autocompleteDropOff" formControlName="locationDropoff" placeholder="Dropped-off at" data-icon="location"></ion-input>
-        <ion-item *ngIf="scheduleForm.controls.locationDropoff.dirty && form.controls.locationDropoff.invalid">
-            <p *ngIf="scheduleForm.controls.locationDropoff.errors.required">DropOff Location required</p>
-        </ion-item>
-      </div>
-      <div>
-        <mbsc-input name="nonFormDate" formControlName="nonFormDate"
-          [errorMessage]="getErrorMessage('nonFormDate')" placeholder="Start Date...End Date" mbsc-range class="demo-non-form"
-          [mbsc-options]="nonFormSettings" data-icon="calendar"></mbsc-input>
-      </div>
-      <div>
-        <mbsc-input name="nonFormPickupTime" formControlName="nonFormPickupTime"
-          [errorMessage]="getErrorMessage('nonFormPickupTime')" data-icon="alarm2" mbsc-range class="demo-non-form"
-          [mbsc-options]="nonTimePickUpFormSettings" placeholder="Pickup Time(Range)..."></mbsc-input>
-      </div>
-      <div>
-        <mbsc-checkbox name="return" data-icon="loop2">Return
-          <span class="mbsc-desc">Return Trip?</span>
-        </mbsc-checkbox>
-      </div>
-      <div>
-        <input name="nonFormReturnTime" data-icon="alarm2" mbsc-range class="demo-non-form"
-          [mbsc-options]="nonTimeDropoffFormSettings" placeholder="Return Time(Range)..." />
-      </div>
-      <div>
-        <ion-input mbsc-select formControlName="kids" placeholder="Select Kids" [mbsc-data]="children" data-icon="material-people"
-          multiple></ion-input>
-      </div>
-      <div>
-        <select mbsc-select [mbsc-options]="selectReminderSettings" data-icon="alarm2">
-          <option value="0">None</option>
-          <option value="1">On Time</option>
-          <option value="10">10 mins before</option>
-          <option value="30">30 mins before</option>
-          <option value="60">1 hour before</option>
-          <option value="1440">1 day before</option>
-        </select>
-      </div>
-      <div class="mbsc-form-group">
-        <div class="mbsc-btn-group-block">
-          <mbsc-button type="submit"  [disabled]="scheduleForm.invalid" (click)="showConfirm()">Estimate Trip</mbsc-button>
-        </div>
-      </div>
-    </form>
-
-  </mbsc-form> -->
-
   <mbsc-form [options]="formSettings">
     <form novalidate #scheduleForm="ngForm">
       <div>
-        <mbsc-input name="titlename" [(ngModel)]="schedule.title" #titlename="ngModel" [error]="!titlename.valid && titlename.dirty" [errorMessage]="getErrorMessage('titlename')"
-          placeholder="Title" minlength="2" required data-icon="material-format-ital"></mbsc-input>
+        <mbsc-input name="titlename" [(ngModel)]="schedule.title" #titlename="ngModel" [error]="!titlename.valid && titlename.dirty"
+          [errorMessage]="getErrorMessage('titlename')" placeholder="Title" minlength="2" required data-icon="material-format-ital"></mbsc-input>
       </div>
       <div>
         <mbsc-input name="locationPickUp" [(ngModel)]="schedule.locationPickUp" #locationPickUp="ngModel" [error]="!locationPickUp.valid && locationPickUp.dirty"
@@ -89,30 +29,31 @@
           [errorMessage]="getErrorMessage('locationDropoff')" placeholder="Dropped-off at" data-icon="location" required></mbsc-input>
       </div>
       <div>
-        <mbsc-input name="startEndDate" [(ngModel)]="schedule.startEndDate" #startEndDate="ngModel" [error]="!startEndDate.valid && startEndDate.dirty"
-          [errorMessage]="getErrorMessage('startEndDate')" placeholder="Start Date...End Date" mbsc-range class="demo-non-form"
+        <mbsc-input name="startAndEndDate" [(ngModel)]="schedule.startAndEndDate" #startEndDate="ngModel" [error]="!startAndEndDate.valid && startAndEndDate.dirty"
+          [errorMessage]="getErrorMessage('startAndEndDate')" placeholder="Start Date...End Date" mbsc-range class="demo-non-form"
           [mbsc-options]="nonFormSettings" data-icon="calendar" required></mbsc-input>
       </div>
       <div>
-        <mbsc-input name="pickupTime" [(ngModel)]="schedule.pickupTime" #pickupTime="ngModel" [error]="!pickupTime.valid && startEndDate.dirty"
-          [errorMessage]="getErrorMessage('pickupTime')" data-icon="alarm2" mbsc-range class="demo-non-form"
-          required [mbsc-options]="nonTimePickUpFormSettings" placeholder="Pickup Time(Range)..."></mbsc-input>
+        <mbsc-input name="pickupTime" [(ngModel)]="schedule.pickupTime" #pickupTime="ngModel" [error]="!pickupTime.valid && pickupTime.dirty"
+          [errorMessage]="getErrorMessage('pickupTime')" data-icon="alarm2" mbsc-range class="demo-non-form" required [mbsc-options]="nonTimePickUpFormSettings"
+          placeholder="Pickup Time(Range)..."></mbsc-input>
       </div>
       <div>
-        <mbsc-checkbox name="return" data-icon="loop2">Return
+        <mbsc-checkbox name="return" [(ngModel)]="return" data-icon="loop2">
           <span class="mbsc-desc">Return Trip?</span>
         </mbsc-checkbox>
       </div>
       <div>
-        <input name="returnTime" [(ngModel)]="schedule.returnTime" data-icon="alarm2" mbsc-range class="demo-non-form" [mbsc-options]="nonTimeDropoffFormSettings"
-          placeholder="Return Time(Range)..." />
+        <input name="returnTime" [(ngModel)]="schedule.returnTime" [disabled]="!return" data-icon="alarm2" mbsc-range class="demo-non-form"
+          [mbsc-options]="nonTimeDropoffFormSettings" placeholder="Return Time(Range)..." />
       </div>
       <div>
-        <select name="kids" [(ngModel)]="schedule.kids" mbsc-select placeholder="Select Kids" [mbsc-data]="children" data-icon="material-people" multiple></select>
+        <select name="kids" [(ngModel)]="schedule.kids" mbsc-select placeholder="Select Kids" [mbsc-data]="children" data-icon="material-people"
+          multiple></select>
       </div>
       <div class="mbsc-form-group">
         <div class="mbsc-btn-group-block">
-          <button (click)="showConfirm()" [disabled]="!scheduleForm.valid">Estimate Trip</button>
+          <button class="button button-positive" (click)="showConfirm()" [disabled]="!scheduleForm.valid">Estimate Trip</button>
         </div>
       </div>
     </form>

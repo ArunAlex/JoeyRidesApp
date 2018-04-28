@@ -68,7 +68,10 @@ export class DatabaseProvider {
           child = [];
           snapshot
             .forEach((doc: any) => {
-              child.push(doc.data());
+              child.push({
+                id: doc.id,
+                fullname: doc.data().name
+              });
             });
           resolve(child);
         });
@@ -102,7 +105,7 @@ export class DatabaseProvider {
         title: schedule.title,
         pickupLocation: schedule.locationPickUp,
         dropoffLocation: schedule.locationDropOff,
-        startAndEndDate: schedule.startEndDate,
+        startAndEndDate: schedule.startAndEndDate,
         pickupTime: schedule.pickupTime,
         returnTime: schedule.returnTime,
         kids: schedule.kids

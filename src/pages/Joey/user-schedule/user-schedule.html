@@ -14,19 +14,19 @@
 </ion-header>
 <ion-content>
   <mbsc-form>
-    <mbsc-eventcalendar [data]="myEvents"></mbsc-eventcalendar>
+    <mbsc-eventcalendar [data]="events"></mbsc-eventcalendar>
     <ion-scroll scrollY="true" style="width: 100%; height: 200px">
       <mbsc-listview [options]="listviewSettings">
         <mbsc-listview-header>Trip's</mbsc-listview-header>
         <mbsc-listview-item *ngFor="let item of data">
           {{item.title}}
-          <div class="md-wo-status">{{item.startDate}}</div>
+          <div class="md-wo-status">{{item.startDate}} - {{item.endDate}}</div>
         </mbsc-listview-item>
       </mbsc-listview>
     </ion-scroll>
     <ion-buttons class="bet_time">
       <button ion-button icon-only clear large (click)="presentActionSheet()">
-        <ion-icon name="add-circle" md="md-add-circle" style="zoom:1.0;"></ion-icon>
+        <ion-icon class="plusicon" name="add-circle" md="md-add-circle" style="zoom:1.0;"></ion-icon>
       </button>
     </ion-buttons>
   </mbsc-form>

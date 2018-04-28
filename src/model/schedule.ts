@@ -1,11 +1,12 @@
 
 export interface Schedule {
     title: string;
-    startEndDate: Date;
+    startAndEndDate: Date;
     pickupTime: TimeRanges;
     returnTime: TimeRanges;
     locationPickUp: string;
     locationDropOff: string;
-    kids: string;
+    kids: Array<string>;
     reminder: string;
+    status: string;
 }

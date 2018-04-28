@@ -29,7 +29,7 @@ export class AuthServiceProvider {
         this.authState = user;
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
         throw error;
       });
   }

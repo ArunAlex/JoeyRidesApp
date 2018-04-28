@@ -56,7 +56,6 @@ export class ModalSchedulePage {
   };
 
   nonFormSettings: any = {
-
     display: 'bottom',
     controls: ['date']
   };
@@ -102,12 +101,11 @@ export class ModalSchedulePage {
     private database: DatabaseProvider,
     private loadingCtrl: LoadingController,
     private formBuilder: FormBuilder) {
-
     this.scheduleForm = this.formBuilder.group({
       titlename: ['', [Validators.required, Validators.minLength(2)]],
       locationPickUp: ['', Validators.required],
       locationDropoff: ['', Validators.required],
-      startEndDate: ['', Validators.required],
+      startAndEndDate: ['', Validators.required],
       pickupTime: ['', Validators.required]
     });
 
@@ -115,24 +113,25 @@ export class ModalSchedulePage {
     self.database.getKidsById(self.authService.authState.uid)
       .then((data) => {
         data.forEach(element => {
-          self.children.push({ value: element.name, text: element.name });
+          self.children.push({ value: element.id, text: element.fullname });
         });
       });
   }
 
   ionViewDidLoad() {
+    var self = this;
     var inputElement1 = document.getElementsByName("locationPickUp")[0].getElementsByTagName("input")[0];
     this.autocompletePickup = new google.maps.places.Autocomplete(inputElement1,
       { types: ['geocode'] });
-    this.autocompletePickup.addListener('place_changed', this.fillInAddress.bind(this.autocompletePickup, inputElement1, this.schedule.locationPickUp));
+    this.autocompletePickup.addListener('place_changed', this.fillInAddress.bind(this.autocompletePickup, self, 'Pickup'));
 
     var inputElement2 = document.getElementsByName("locationDropoff")[0].getElementsByTagName("input")[0];
     this.autocompleteDropOff = new google.maps.places.Autocomplete(inputElement2,
       { types: ['geocode'] });
-    this.autocompleteDropOff.addListener('place_changed', this.fillInAddress.bind(this.autocompleteDropOff, inputElement2, this.schedule.locationDropOff));
+    this.autocompleteDropOff.addListener('place_changed', this.fillInAddress.bind(this.autocompleteDropOff, self, 'Dropoff'));
   }
 
-  fillInAddress(input, location) {
+  fillInAddress(self, type) {
     var componentForm = {
       street_number: 'short_name',
       route: 'long_name',
@@ -155,7 +154,11 @@ export class ModalSchedulePage {
         }
       }
     }
-    input.value = location = val;
+    switch (type) {
+      case 'Pickup': self.schedule.locationPickUp = val; break;
+      case 'Dropoff': self.schedule.locationDropOff = val; break;
+    }
+
   }
 
   getErrorMessage(field: string) {
@@ -173,6 +176,15 @@ export class ModalSchedulePage {
 
   showConfirm() {
     var self = this;
+    var selectedChildrenNames = [];
+    self.children.forEach(element => {
+      for (var i = 0; i < self.schedule.kids.length; i++) {
+        if (element.value === self.schedule.kids[i]) {
+          selectedChildrenNames.push(element.text);
+        }
+      }
+    });
+
     mobiscroll.confirm({
       title: 'Confirm Trip Name',
       message:
@@ -184,8 +196,7 @@ export class ModalSchedulePage {
         '<b>Pick-up Location:</b>' + self.schedule.locationPickUp +
         '<br\>' +
         '<b>Drop-off Location:</b>' + self.schedule.locationDropOff +
-        '<br\>' +
-        '<b>Kids:</b>' + self.schedule.kids,
+        (selectedChildrenNames.length > 0 ? '<br\><b>Kids:</b>' + selectedChildrenNames.join(', ') : ''),
       okText: 'Agree',
       cancelText: 'Disagree',
       callback: (res) => {
@@ -195,6 +206,7 @@ export class ModalSchedulePage {
             enableBackdropDismiss: true
           });
           loader.present();
+          this.schedule.status = 'Pending';
           self.database.addSchedule(this.schedule, self.authService.authState.uid)
             .then(() => {
               loader.dismiss();
@@ -225,7 +237,7 @@ export class ModalSchedulePage {
     locationDropoff: {
       required: 'Drop-off Location required'
     },
-    startEndDate: {
+    startAndEndDate: {
       required: 'From Date required'
     },
     pickupTime: {

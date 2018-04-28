@@ -26,6 +26,7 @@ export class LoginPage {
 
   loginForm: FormGroup;
   user = {} as User;
+  error: {code: string, message: string} = {code: '', message: ''};
 
   constructor(private aService: AuthServiceProvider,
     private database: DatabaseProvider,
@@ -61,14 +62,18 @@ export class LoginPage {
         var uid = this.aService.authState.uid;
         this.database.getUserById(uid)
           .then((data) => {
-              loading.dismiss();
-              if (data.isJoey) {
-                this.navCtrl.setRoot(JoeyHomePage);
-              }
-              else {
-                this.navCtrl.setRoot(RooHomePage);
-              }
-          });
+            loading.dismiss();
+            if (data.isJoey) {
+              this.navCtrl.setRoot(JoeyHomePage);
+            }
+            else {
+              this.navCtrl.setRoot(RooHomePage);
+            }
+          })
+      })
+      .catch((error) => {
+        loading.dismiss();
+        this.error = error;
       });
   }
 }

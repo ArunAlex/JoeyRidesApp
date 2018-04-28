@@ -20,6 +20,7 @@ import { DatabaseProvider } from '../../../providers/database/database';
 
 export class UserSchedulePage {
   data = [] as any;
+  events = [] as any;
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
@@ -30,13 +31,20 @@ export class UserSchedulePage {
     self.database.getSchedules(self.authService.authState.uid)
       .then((data) => {
         data.forEach(element => {
-          self.data.push({ title: element.title, date: element.startDate });
+          self.data.push({
+            title: element.title,
+            startDate: element.startAndEndDate[0].toDateString(),
+            endDate: element.startAndEndDate[1].toDateString(),
+            status: 'Pending'
+          });
+          self.events.push({
+            start: new Date(element.startAndEndDate[0].getFullYear(), element.startAndEndDate[0].getMonth(), element.startAndEndDate[0].getDate()),
+            end: new Date(element.startAndEndDate[1].getFullYear(), element.startAndEndDate[1].getMonth(), element.startAndEndDate[1].getDate()),
+            text: element.title
+          });
         });
       });
   }
-
-  ids = 2;
-
 
   listviewSettings: any = {
     theme: 'material',
@@ -49,7 +57,7 @@ export class UserSchedulePage {
       icon: 'checkmark',
       text: 'Complete',
       action: (event, inst) => {
-        this.data[event.index].status = 'Completed';
+        this.data[event.index].status = 'Pending';
       }
     }, {
       percent: -50,
@@ -60,19 +68,6 @@ export class UserSchedulePage {
       action: (event, inst) => {
         this.data.splice(event.index, 1);
         return false;
-      }
-    }, {
-      percent: 50,
-      color: 'green',
-      icon: 'plus',
-      text: 'Spawn',
-      undo: true,
-      action: (event, inst) => {
-        this.data.push({
-          id: ++this.ids,
-          title: 'Work order #000' + this.ids + ' created from WO #000',
-          status: 'Assigned'
-        });
       }
     }, {
       percent: -25,
@@ -94,7 +89,17 @@ export class UserSchedulePage {
         .then((data) => {
           self.data = [];
           data.forEach(element => {
-            self.data.push({ title: element.title, date: element.startDate });
+            self.data.push({
+              title: element.title,
+              startDate: element.startAndEndDate[0].toDateString(),
+              endDate: element.startAndEndDate[1].toDateString(),
+              status: 'Pending'
+            });
+            self.events.push({
+              start: new Date(element.startAndEndDate[0].getFullYear(), element.startAndEndDate[0].getMonth(), element.startAndEndDate[0].getDate()),
+              end: new Date(element.startAndEndDate[1].getFullYear(), element.startAndEndDate[1].getMonth(), element.startAndEndDate[1].getDate()),
+              text: element.title
+            });
           });
         });
       console.log('closed schedule');
@@ -112,7 +117,6 @@ export class UserSchedulePage {
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Add',
       buttons: [{
         text: 'New Trip',
         role: 'NewTrip',
